@@ -2,7 +2,7 @@ import logging
 
 from src.Core import Core
 
-logging.basicConfig(format='httpc: %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='httpfs: %(message)s', level=logging.DEBUG)
 
 core = Core()
 try:
