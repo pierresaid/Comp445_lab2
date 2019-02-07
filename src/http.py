@@ -2,6 +2,8 @@ import os
 import socket
 from urllib.parse import urlparse
 import re
+from os import listdir
+from os.path import isfile, join
 
 
 class Response:
@@ -44,11 +46,19 @@ class Http:
             new_res = conn.recv(1)
             result += new_res
         res = re.findall(b"(GET|POST) /(.*) HTTP", result)
-        path = os.path.normpath(str(res[0][1], encoding='utf-8'))
-        if res[0][0] == b'GET':
-            self.Get(path)
-        if res[0][0] == b'POST':
-            self.Post(path)
+        if str(res[0][1], encoding='utf-8') == "":
+            self.DefaultGet()
+        else:
+            path = os.path.normpath(str(res[0][1], encoding='utf-8'))
+            if res[0][0] == b'GET':
+                self.Get(path)
+            if res[0][0] == b'POST':
+                self.Post(path)
+
+    def DefaultGet(self):
+        onlyfiles = [f for f in listdir(self.directory) if isfile(join(self.directory, f))]
+        strfiles = '\n'.join(onlyfiles)
+        self.Responde(200, "OK", strfiles + '\n')
 
     def Get(self, path):
         print(f"c un get {path}")
