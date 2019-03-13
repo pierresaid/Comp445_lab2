@@ -104,7 +104,7 @@ class Http:
             query = f"HTTP/1.1 {code} {status}\r\nContent-Length: {len(data)}\r\n\r\n{data}"
         else:
             query = f"HTTP/1.1 {code} {status}\r\nContent-Length: 0\r\n\r\n"
-        if self.verbose:
+        if self.verbose and data is not None:
             a = f"HTTP/1.1 {code} {status}\r\nContent-Length: {len(data)}".split('\r\n')
             b = [s for s in a if s is not ""]
             for s in b:
